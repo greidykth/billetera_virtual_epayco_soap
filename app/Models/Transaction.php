@@ -9,4 +9,8 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    public function wallet()
+    {
+        return $this->belongsTo(Wallet::class);
+    }
 }
