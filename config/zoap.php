@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ResetController;
 use App\Http\Controllers\TransactionController;
 
 return [
@@ -43,6 +44,21 @@ return [
         'transaction'              => [
             'name'              => 'Transaction',
             'class'             => TransactionController::class,
+            'exceptions'        => [
+                'Exception'
+            ],
+            'types'             => [
+                'keyValue'          => 'Viewflex\Zoap\Demo\Types\KeyValue',
+            ],
+            'strategy'          => 'ArrayOfTypeComplex',
+            'headers'           => [
+                'Cache-Control'     => 'no-cache, no-store'
+            ],
+            'options'           => []
+        ],
+        'reset'              => [
+            'name'              => 'Reset',
+            'class'             => ResetController::class,
             'exceptions'        => [
                 'Exception'
             ],
