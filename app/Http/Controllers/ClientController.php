@@ -69,7 +69,7 @@ class ClientController
             return $this->responseWhitData(
                 true,
                 "Cliente registrado satisfactoriamente",
-                00,
+                "00",
                 [
                     'token' => $token,
                     'client' => new TypeClient($client),
@@ -132,7 +132,7 @@ class ClientController
             return $this->responseWhitData(
                 true,
                 "Cliente autenticado. Bienvenido(a) a tu billetera virtual",
-                00,
+                "00",
                 (object)[
                     'token' => $token,
                     'client' => new TypeClient($client),
