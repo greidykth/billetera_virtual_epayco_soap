@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Wallet;
 use App\Traits\SoapResponseTrait;
+use App\Types\TypeClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -33,10 +34,10 @@ class ClientController
         ];
 
         $rules = [
-            'dni' => "required|unique:clients",
+            'dni' => "required|unique:clients|min_digits:8",
             'name' => "required",
             'email' => "required|unique:clients",
-            'cellphone' => "required|unique:clients",
+            'cellphone' => "required|unique:clients|min_digits:8",
         ];
 
         try {
@@ -71,7 +72,7 @@ class ClientController
                 00,
                 [
                     'token' => $token,
-                    'client' => (object)$client->toArray(),
+                    'client' => new TypeClient($client),
                     'saldo' => $client->wallet->balance,
                 ]
             );
@@ -112,7 +113,7 @@ class ClientController
             if ($validation->fails()) {
                 return $this->responseWhitData(
                     false,
-                    "Datos faltantes o repetidos. Uno o varios campos son requeridos",
+                    "Datos faltantes. Uno o varios campos son requeridos",
                     422,
                     (object)['error' => $validation->errors()->getMessages()]
                 );
@@ -134,7 +135,7 @@ class ClientController
                 00,
                 (object)[
                     'token' => $token,
-                    'client' => (object)$client->toArray(),
+                    'client' => new TypeClient($client),
                     'saldo' => $client->wallet->balance
                 ],
             );
