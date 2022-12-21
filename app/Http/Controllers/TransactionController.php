@@ -79,7 +79,7 @@ class TransactionController
             return $this->responseWhitData(
                 true,
                 "Consulta de saldo realizada satisfactoriamente",
-                00,
+                "00",
                 (object)[
                     'balance' => $wallet->balance,
                 ],
@@ -166,7 +166,7 @@ class TransactionController
             return $this->responseWhitData(
                 true,
                 "Recarga de saldo realizada satisfactoriamente",
-                00,
+                "00",
                 (object)[
                     'value' => $transaction->value,
                     'balance' => $wallet->balance,
@@ -255,19 +255,19 @@ class TransactionController
                 401
             );
         }
-        
+
         //actualizar estado de transacciones que han quedado abandonadas del mismo pagador
         $transactionsAbandonedPayer = Transaction::where('status', 'processing')
-        ->where('wallet_id', $clientReceptor->wallet->id)
-        ->where('created_at', '<', Carbon::now())
-        ->update(['status' => 'failed']);
-        
+            ->where('wallet_id', $clientReceptor->wallet->id)
+            ->where('created_at', '<', Carbon::now())
+            ->update(['status' => 'failed']);
+
         //actualizar estado de transacciones que han quedado abandonadas del mismo receptor
         $transactionsAbandonedReceptor = Transaction::where('status', 'processing')
-        ->where('wallet_id', $clientPayer->wallet->id)
-        ->where('created_at', '<', Carbon::now())
-        ->update(['status' => 'failed']);
-        
+            ->where('wallet_id', $clientPayer->wallet->id)
+            ->where('created_at', '<', Carbon::now())
+            ->update(['status' => 'failed']);
+
         $numbers = '0123456789';
 
         try {
@@ -302,7 +302,7 @@ class TransactionController
             return $this->responseWhitData(
                 true,
                 'Solicitud de pago realizada satisfactoriamente. Se ha enviado un token de confirmación a su email',
-                00,
+                "00",
                 ['token_confirmacion' => $transactionPayer->token_confirmation] //se retorna el token de confirmacion solo para fines de testing
             );
         } catch (\Throwable $th) {
@@ -324,8 +324,8 @@ class TransactionController
      * @return object
      */
 
-     public function payConfirmation($token, $tokenConfirmation)
-     {
+    public function payConfirmation($token, $tokenConfirmation)
+    {
         $inputs = [
             'tokenConfirmation' => $tokenConfirmation,
             'token' => $token,
@@ -348,7 +348,7 @@ class TransactionController
         }
 
         $tokenClient = PersonalAccessToken::findToken($token);
-        
+
         if (is_null($tokenClient)) {
             return $this->responseNoData(
                 false,
@@ -423,7 +423,7 @@ class TransactionController
             return $this->responseWhitData(
                 true,
                 'El pago se realizó satisfactoriamente',
-                00,
+                "00",
                 ['saldo_disponible' => $walletPayer->balance],
             );
         } catch (\Throwable $th) {
@@ -436,5 +436,5 @@ class TransactionController
                 ['error' => $th]
             );
         }
-     }
+    }
 }
